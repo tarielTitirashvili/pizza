@@ -3,10 +3,16 @@ import React from 'react';
 type Props = {};
 
 const Sort = (props: Props) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [selectedType, setSelectedType] = React.useState<number>(0);
+  const sortTypes: string[] = ['популярности', 'цене', 'алфавиту'];
+  const selectedSortType = sortTypes[selectedType];
+
   return (
     <div className="sort">
       <div className="sort__label">
         <svg
+          style={{ transform: `${isOpen ? 'rotate(180deg)' : 'rotate(0)'}` }}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -18,15 +24,22 @@ const Sort = (props: Props) => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={() => setIsOpen(!isOpen)}>{selectedSortType}</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div>
+      {isOpen && (
+        <div onClick={() => setIsOpen(!isOpen)} className="sort__popup">
+          <ul>
+            {sortTypes.map((sortType, i) => (
+              <li
+                className={selectedType === i ? 'active' : ''}
+                onClick={() => setSelectedType(i)}
+                key={sortType}>
+                {sortType}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
