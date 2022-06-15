@@ -11,7 +11,7 @@ const Sort = (props: Props) => {
   return (
     <div className="sort">
       <div className="sort__label">
-        <b>Сортировка по:</b>
+        <b>Sort by:</b>
         <div onClick={() => setIsOpen(!isOpen)}>
           <svg
             style={{ transform: `${isOpen ? 'rotate(0)' : 'rotate(180deg)'}` }}
