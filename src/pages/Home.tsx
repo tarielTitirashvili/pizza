@@ -26,14 +26,16 @@ const Home = (props: Props) => {
   const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
   const [selectedType, setSelectedType] = React.useState<number>(0);
   const selectedSortType: SortType = sortTypes[selectedType];
-  const search = React.useContext(SearchContext);
+  const { search } = React.useContext(SearchContext);
 
   const getData = (selectedCategory?: number, selectedType?: SortType): void => {
     setLoading(true);
     fetch(
       `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
         selectedCategory ? `category=${selectedCategory}&` : ''
-      }`}sortBy=${selectedType?.sortType}&order=${selectedType?.order}&title=${search.search}`,
+      }`}sortBy=${selectedType?.sortType}&order=${selectedType?.order}${
+        search && `&title=${search}`
+      }`,
     )
       .then((data) => data.json())
       .then((data) => {

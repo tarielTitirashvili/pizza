@@ -29,3 +29,14 @@
 .searchContainer {
   position: relative;
 }
+.closeIcon {
+  position: absolute;
+  right: 8px;
+  top: 0px;
+  width: 23px;
+  opacity: 0.4;
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
