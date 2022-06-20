@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortTypes } from '../pages/Home';
+import { sortTypes } from '../constants';
 
 type Props = {
   selectedSortType: string;
@@ -38,8 +38,8 @@ const Sort = (props: Props) => {
               <li
                 className={selectedType === i ? 'active' : ''}
                 onClick={() => setSelectedType(i)}
-                key={sortType}>
-                {sortType}
+                key={sortType.title}>
+                {sortType.title}
               </li>
             ))}
           </ul>

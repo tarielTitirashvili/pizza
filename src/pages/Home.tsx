@@ -3,6 +3,8 @@ import Categories from '../components/Categories';
 import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
 import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
+import { sortTypes } from '../constants';
+import { sortType } from '../types';
 
 type Props = {};
 
@@ -16,21 +18,20 @@ interface Pizza {
   category: number;
   rating: number;
 }
-export const sortTypes: string[] = ['popularity', 'price', 'title'];
 
 const Home = (props: Props) => {
   const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
   const [selectedType, setSelectedType] = React.useState<number>(0);
-  const selectedSortType: string = sortTypes[selectedType];
+  const selectedSortType: sortType = sortTypes[selectedType];
 
-  const getData = (selectedCategory?: number, selectedType?: string): void => {
+  const getData = (selectedCategory?: number, selectedType?: sortType): void => {
     setLoading(true);
     fetch(
       `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
         selectedCategory ? `category=${selectedCategory}&` : ''
-      }`}sortBy=${selectedType}&order=desc`,
+      }`}sortBy=${selectedType?.sortType}&order=${selectedType?.order}`,
     )
       .then((data) => data.json())
       .then((data) => {
@@ -53,7 +54,7 @@ const Home = (props: Props) => {
       <div className="content__top">
         <Categories selectedCategory={selectedCategory} onClickNewCategory={setSelectedCategory} />
         <Sort
-          selectedSortType={selectedSortType}
+          selectedSortType={selectedSortType.title}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
         />

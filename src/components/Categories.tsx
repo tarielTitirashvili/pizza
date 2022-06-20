@@ -1,10 +1,10 @@
 import React from 'react';
+import { categories } from '../constants';
 
 type Props = {
   selectedCategory: number;
   onClickNewCategory: React.Dispatch<React.SetStateAction<number>>;
 };
-const categories: string[] = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
 const Categories = (props: Props) => {
   const { selectedCategory, onClickNewCategory } = props;
