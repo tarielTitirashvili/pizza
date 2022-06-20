@@ -1,12 +1,15 @@
 import React from 'react';
+import { sortTypes } from '../pages/Home';
 
-type Props = {};
+type Props = {
+  selectedSortType: string;
+  selectedType: number;
+  setSelectedType: React.Dispatch<React.SetStateAction<number>>;
+};
 
 const Sort = (props: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [selectedType, setSelectedType] = React.useState<number>(0);
-  const sortTypes: string[] = ['популярности', 'цене', 'алфавиту'];
-  const selectedSortType = sortTypes[selectedType];
+  const { selectedSortType, selectedType, setSelectedType } = props;
 
   return (
     <div className="sort">
