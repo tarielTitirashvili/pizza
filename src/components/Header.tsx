@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import pizzaLogoSvg from '../assets/img/pizza-logo.svg';
+import Search from './search/Search';
 
 type Props = {};
 
@@ -17,6 +18,7 @@ const Header = (props: Props) => {
             </div>
           </div>
         </NavLink>
+        <Search />
         <div className="header__cart">
           <NavLink to="/cart" className="button button--cart">
             <span>520 ₽</span>
