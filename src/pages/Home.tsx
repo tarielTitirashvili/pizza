@@ -1,10 +1,11 @@
 import React from 'react';
+import { SearchContext } from '../App';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
 import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
 import { sortTypes } from '../constants';
-import { sortType } from '../types';
+import { SortType } from '../types';
 
 type Props = {};
 
@@ -24,14 +25,15 @@ const Home = (props: Props) => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
   const [selectedType, setSelectedType] = React.useState<number>(0);
-  const selectedSortType: sortType = sortTypes[selectedType];
+  const selectedSortType: SortType = sortTypes[selectedType];
+  const search = React.useContext(SearchContext);
 
-  const getData = (selectedCategory?: number, selectedType?: sortType): void => {
+  const getData = (selectedCategory?: number, selectedType?: SortType): void => {
     setLoading(true);
     fetch(
       `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
         selectedCategory ? `category=${selectedCategory}&` : ''
-      }`}sortBy=${selectedType?.sortType}&order=${selectedType?.order}`,
+      }`}sortBy=${selectedType?.sortType}&order=${selectedType?.order}&title=${search.search}`,
     )
       .then((data) => data.json())
       .then((data) => {
@@ -47,7 +49,7 @@ const Home = (props: Props) => {
 
   React.useEffect(() => {
     getData(selectedCategory, selectedSortType);
-  }, [selectedCategory, selectedSortType]);
+  }, [selectedCategory, selectedSortType, search]);
 
   return (
     <div className="container">
