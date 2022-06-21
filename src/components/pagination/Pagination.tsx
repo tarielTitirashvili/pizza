@@ -10,8 +10,8 @@ type Props = {
 
 const Pagination = (props: Props) => {
   const { loading, page, setPage, maxPage } = props;
-  const firstPAge = page === 1 ? page : page - 1;
-  const secondPage = page === 1 ? page + 1 : page;
+  const firstPAge = page === 1 ? page : page === maxPage ? page - 2 : page - 1;
+  const secondPage = page === 1 ? page + 1 : page === maxPage ? page - 1 : page;
   const thirdPage = page === maxPage ? page : page === 1 ? page + 2 : page + 1;
 
   return (
@@ -36,15 +36,15 @@ const Pagination = (props: Props) => {
         className={`${secondPage === page && css.active}`}>
         {secondPage}
       </li>
+      <li
+        onClick={() => (!loading ? setPage(thirdPage) : '')}
+        className={`${thirdPage === page && css.active}`}>
+        {thirdPage}
+      </li>
       {page === maxPage || page > maxPage ? (
         ''
       ) : (
         <>
-          <li
-            onClick={() => (!loading ? setPage(thirdPage) : '')}
-            className={`${thirdPage === page && css.active}`}>
-            {thirdPage}
-          </li>
           <li
             onClick={() => (!loading ? setPage(page + 1) : '')}
             className={css.page}>

@@ -3,7 +3,7 @@ import { categories } from '../constants';
 
 type Props = {
   selectedCategory: number;
-  onClickNewCategory: React.Dispatch<React.SetStateAction<number>>;
+  onClickNewCategory: (category: number) => void;
 };
 
 const Categories = (props: Props) => {

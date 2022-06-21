@@ -6,7 +6,10 @@ import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
 import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
 import { sortTypes } from '../constants';
-import { SortType } from '../types';
+import { Category, SortType } from '../types';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategory } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store/store';
 
 type Props = {};
 
@@ -24,11 +27,16 @@ interface Pizza {
 const Home = (props: Props) => {
   const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
   const [selectedType, setSelectedType] = React.useState<number>(0);
   const selectedSortType: SortType = sortTypes[selectedType];
   const [page, setPAge] = React.useState<number>(1);
   const { search } = React.useContext(SearchContext);
+
+  const selCategory = useSelector((state: RootState) => state.filter.category);
+  const dispatch = useDispatch();
+  const changeCategory = (category: number) => {
+    dispatch(setCategory(category));
+  };
 
   const skeletons = [...new Array(6)].map((elem, i) => <Skeleton key={i} />);
   const allPizzas = pizzas.map((pizza: Pizza) => (
@@ -37,13 +45,13 @@ const Home = (props: Props) => {
 
   const getData = (
     page: number,
-    selectedCategory?: number,
+    selCategory?: number,
     selectedType?: SortType,
   ): void => {
     setLoading(true);
     fetch(
       `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
-        selectedCategory ? `category=${selectedCategory}&` : ''
+        selCategory ? `category=${selCategory}&` : ''
       }`}page=${page}&limit=4&sortBy=${selectedType?.sortType}&order=${
         selectedType?.order
       }${search && `&title=${search}`}`,
@@ -61,15 +69,15 @@ const Home = (props: Props) => {
   }, []);
 
   React.useEffect(() => {
-    getData(page, selectedCategory, selectedSortType);
-  }, [selectedCategory, selectedSortType, search, page]);
+    getData(page, selCategory, selectedSortType);
+  }, [selCategory, selectedSortType, search, page]);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories
-          selectedCategory={selectedCategory}
-          onClickNewCategory={setSelectedCategory}
+          selectedCategory={selCategory}
+          onClickNewCategory={changeCategory}
         />
         <Sort
           selectedSortType={selectedSortType.title}
