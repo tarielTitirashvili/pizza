@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  li {
+    cursor: pointer;
+    border: 1px solid #fe5f1e;
+    border-radius: 100%;
+    height: 45px;
+    width: 45px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fe5f1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    &:hover {
+      color: #ffffff;
+      background-color: #fe5f1e;
+    }
+  }
+  .active {
+    color: #ffffff;
+    background-color: #fe5f1e;
+  }
+}
+.empty {
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+}
