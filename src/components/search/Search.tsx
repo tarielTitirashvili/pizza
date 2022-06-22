@@ -7,12 +7,18 @@ type Props = {};
 
 const Search = (props: Props) => {
   const { search, setSearch }: SearchType = React.useContext(SearchContext);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
   const clear = () => {
     setSearch('');
+    if (inputRef.current !== null) {
+      inputRef.current.focus();
+    }
   };
   return (
     <div className={css.searchContainer}>
       <input
+        ref={inputRef || null}
         className={css.search}
         value={search}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

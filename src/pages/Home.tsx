@@ -9,6 +9,8 @@ import { SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelCategory } from '../redux/slices/filterSlice';
 import { RootState } from '../redux/store/store';
+import axios from 'axios';
+import { useDebounce } from 'use-debounce';
 
 type Props = {};
 
@@ -28,6 +30,7 @@ const Home = (props: Props) => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [page, setPAge] = React.useState<number>(1);
   const { search } = React.useContext(SearchContext);
+  const [debouncedSearch] = useDebounce(search, 500);
 
   const { selCategory, selectedSortType } = useSelector(
     (state: RootState) => state.filter,
@@ -45,19 +48,20 @@ const Home = (props: Props) => {
 
   const getData = (
     page: number,
+    search?: string,
     selCategory?: number,
     selectedType?: SortType,
   ): void => {
     setLoading(true);
-    fetch(
-      `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
-        selCategory ? `category=${selCategory}&` : ''
-      }`}page=${page}&limit=4&sortBy=${selectedType?.sortType}&order=${
-        selectedType?.order
-      }${search && `&title=${search}`}`,
-    )
-      .then((data) => data.json())
-      .then((data) => {
+    axios
+      .get(
+        `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
+          selCategory ? `category=${selCategory}&` : ''
+        }`}page=${page}&limit=4&sortBy=${selectedType?.sortType}&order=${
+          selectedType?.order
+        }${search && `&title=${search}`}`,
+      )
+      .then(({ data }) => {
         setPizzas(data);
         setLoading(false);
       });
@@ -69,8 +73,8 @@ const Home = (props: Props) => {
   }, []);
 
   React.useEffect(() => {
-    getData(page, selCategory, selectedSortType);
-  }, [selCategory, selectedSortType, search, page]);
+    getData(page, debouncedSearch, selCategory, selectedSortType);
+  }, [selCategory, selectedSortType, debouncedSearch, page]);
 
   return (
     <div className="container">
