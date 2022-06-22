@@ -1,15 +1,20 @@
 import React from 'react';
 import { sortTypes } from '../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
+import { setSelectedType } from '../redux/slices/filterSlice';
 
 type Props = {
   selectedSortType: string;
-  selectedType: number;
-  setSelectedType: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Sort = (props: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { selectedSortType, selectedType, setSelectedType } = props;
+  const { selectedSortType } = props;
+  const dispatch = useDispatch();
+  const selectedType = useSelector(
+    (state: RootState) => state.filter.selectedType,
+  );
 
   return (
     <div className="sort">
@@ -37,7 +42,7 @@ const Sort = (props: Props) => {
             {sortTypes.map((sortType, i) => (
               <li
                 className={selectedType === i ? 'active' : ''}
-                onClick={() => setSelectedType(i)}
+                onClick={() => dispatch(setSelectedType(i))}
                 key={sortType.title}>
                 {sortType.title}
               </li>

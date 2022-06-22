@@ -5,10 +5,9 @@ import Pagination from '../components/pagination/Pagination';
 import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
 import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
-import { sortTypes } from '../constants';
-import { Category, SortType } from '../types';
+import { SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategory } from '../redux/slices/filterSlice';
+import { setSelCategory } from '../redux/slices/filterSlice';
 import { RootState } from '../redux/store/store';
 
 type Props = {};
@@ -27,15 +26,16 @@ interface Pizza {
 const Home = (props: Props) => {
   const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [selectedType, setSelectedType] = React.useState<number>(0);
-  const selectedSortType: SortType = sortTypes[selectedType];
   const [page, setPAge] = React.useState<number>(1);
   const { search } = React.useContext(SearchContext);
 
-  const selCategory = useSelector((state: RootState) => state.filter.category);
+  const { selCategory, selectedSortType } = useSelector(
+    (state: RootState) => state.filter,
+  );
+
   const dispatch = useDispatch();
   const changeCategory = (category: number) => {
-    dispatch(setCategory(category));
+    dispatch(setSelCategory(category));
   };
 
   const skeletons = [...new Array(6)].map((elem, i) => <Skeleton key={i} />);
@@ -79,11 +79,7 @@ const Home = (props: Props) => {
           selectedCategory={selCategory}
           onClickNewCategory={changeCategory}
         />
-        <Sort
-          selectedSortType={selectedSortType.title}
-          selectedType={selectedType}
-          setSelectedType={setSelectedType}
-        />
+        <Sort selectedSortType={selectedSortType.title} />
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">{loading ? skeletons : allPizzas}</div>
