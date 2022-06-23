@@ -19,7 +19,7 @@ const initialState: FilterState = {
   selectedPage: 1,
 };
 
-export const categorySlice = createSlice({
+export const filterSlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
@@ -43,6 +43,6 @@ export const categorySlice = createSlice({
 });
 
 export const { setSelCategory, setSelectedType, setSelectedPage, setFilters } =
-  categorySlice.actions;
+  filterSlice.actions;
 
-export default categorySlice.reducer;
+export default filterSlice.reducer;

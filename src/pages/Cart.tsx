@@ -382,7 +382,9 @@ const Cart = (props: Props) => {
               </span>
             </div>
             <div className="cart__bottom-buttons">
-              <NavLink to="/" className="button button--outline button--add go-back-btn">
+              <NavLink
+                to="/"
+                className="button button--outline button--add go-back-btn">
                 <svg
                   width="8"
                   height="14"

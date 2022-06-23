@@ -1,25 +1,28 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addPizza, removePizza } from '../../redux/slices/cartSlice';
+import { Pizza, SelectedPizza } from '../../types';
 
-type Props = {
-  price: number;
-  title: string;
-  imageUrl: string;
-  sizes: number[];
-  types: number[];
-};
-
-const PizzaBlock = (props: Props) => {
+const PizzaBlock = (props: Pizza) => {
   const { price, title, imageUrl, sizes, types } = props;
   const typeNames: string[] = ['тонкое', 'традиционное'];
   const [selectedType, setSelectedType] = React.useState<number>(types[0]);
   const [selectedSize, setSelectedSize] = React.useState<number>(sizes[0]);
-
+  const dispatch = useDispatch();
+  const selectedPizza: SelectedPizza = {
+    ...props,
+    sizes: selectedSize,
+    types: selectedType,
+  };
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
         <img className="pizza-block__image" src={imageUrl} alt={title} />
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
+          <button onClick={() => dispatch(removePizza(selectedPizza))}>
+            remove
+          </button>
           <ul>
             {types.map((type) => (
               <li
@@ -42,8 +45,10 @@ const PizzaBlock = (props: Props) => {
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} ₽</div>
-          <button className="button button--outline button--add">
+          <div className="pizza-block__price">from {price} $</div>
+          <button
+            onClick={() => dispatch(addPizza(selectedPizza))}
+            className="button button--outline button--add">
             <svg
               width="12"
               height="12"
@@ -55,7 +60,7 @@ const PizzaBlock = (props: Props) => {
                 fill="white"
               />
             </svg>
-            <span>Добавить</span>
+            <span>Add</span>
             <i>0</i>
           </button>
         </div>

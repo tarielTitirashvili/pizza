@@ -5,7 +5,7 @@ import Pagination from '../components/pagination/Pagination';
 import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
 import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
-import { SortType } from '../types';
+import { Pizza, SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   FilterState,
@@ -20,17 +20,6 @@ import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {};
-
-interface Pizza {
-  id: number;
-  imageUrl: string;
-  title: string;
-  types: number[];
-  sizes: number[];
-  price: number;
-  category: number;
-  rating: number;
-}
 
 const Home = (props: Props) => {
   const navigate = useNavigate();
