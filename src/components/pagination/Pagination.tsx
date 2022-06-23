@@ -4,7 +4,7 @@ import css from './pagination.module.scss';
 type Props = {
   loading: boolean;
   page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPage: (page: number) => void;
   maxPage: number;
 };
 

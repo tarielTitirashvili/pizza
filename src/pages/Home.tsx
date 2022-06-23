@@ -7,10 +7,17 @@ import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
 import { SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelCategory } from '../redux/slices/filterSlice';
+import {
+  FilterState,
+  setFilters,
+  setSelCategory,
+  setSelectedPage,
+} from '../redux/slices/filterSlice';
 import { RootState } from '../redux/store/store';
 import axios from 'axios';
 import { useDebounce } from 'use-debounce';
+import qs from 'qs';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
@@ -26,25 +33,56 @@ interface Pizza {
 }
 
 const Home = (props: Props) => {
-  const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [page, setPAge] = React.useState<number>(1);
-  const { search } = React.useContext(SearchContext);
-  const [debouncedSearch] = useDebounce(search, 500);
-
-  const { selCategory, selectedSortType } = useSelector(
-    (state: RootState) => state.filter,
-  );
+  const navigate = useNavigate();
+  const { selCategory, selectedSortType, selectedType, selectedPage } =
+    useSelector((state: RootState) => state.filter);
 
   const dispatch = useDispatch();
   const changeCategory = (category: number) => {
     dispatch(setSelCategory(category));
   };
+  const setPage = (page: number) => {
+    dispatch(setSelectedPage(page));
+  };
+
+  const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const { search, setSearch } = React.useContext(SearchContext);
+  const [debouncedSearch] = useDebounce(search, 300);
+  const [init, setInit] = React.useState<boolean>(true);
 
   const skeletons = [...new Array(6)].map((elem, i) => <Skeleton key={i} />);
   const allPizzas = pizzas.map((pizza: Pizza) => (
     <PizzaBlock key={pizza.id} {...pizza} />
   ));
+
+  const getQueryParams = () => {
+    const queryParams: string = window.location.search;
+    if (queryParams) {
+      let params = qs.parse(queryParams.slice(1));
+      //{ search, selCategory, selectedPage, selectedType }
+      const k = params.search ? params.search?.toString() : '';
+      const category = Number(params.selCategory);
+      const page = Number(params.selectedPage);
+      const type = Number(params.selectedType);
+      setSearch(k);
+      dispatch(
+        setFilters({
+          selCategory: category,
+          selectedPage: page,
+          selectedType: type,
+        }),
+      );
+      if (
+        k === search &&
+        category === selCategory &&
+        selectedPage === page &&
+        selectedType === type
+      ) {
+        setInit(false);
+      }
+    }
+  };
 
   const getData = (
     page: number,
@@ -66,15 +104,31 @@ const Home = (props: Props) => {
         setLoading(false);
       });
   };
-
   React.useEffect(() => {
-    getData(page);
     window.scrollTo(0, 0);
+    getQueryParams();
   }, []);
 
   React.useEffect(() => {
-    getData(page, debouncedSearch, selCategory, selectedSortType);
-  }, [selCategory, selectedSortType, debouncedSearch, page]);
+    if (!init) {
+      getData(selectedPage, debouncedSearch, selCategory, selectedSortType);
+    }
+    if (init) {
+      getQueryParams();
+    }
+  }, [selCategory, selectedSortType, debouncedSearch, selectedPage, init]);
+
+  React.useEffect(() => {
+    if (!init) {
+      const data = qs.stringify({
+        selectedType,
+        selCategory,
+        search,
+        selectedPage,
+      });
+      navigate(`?${data}`);
+    }
+  }, [selCategory, selectedSortType, debouncedSearch, selectedPage]);
 
   return (
     <div className="container">
@@ -87,7 +141,12 @@ const Home = (props: Props) => {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">{loading ? skeletons : allPizzas}</div>
-      <Pagination loading={loading} page={page} setPage={setPAge} maxPage={3} />
+      <Pagination
+        loading={loading}
+        page={selectedPage}
+        setPage={setPage}
+        maxPage={3}
+      />
     </div>
   );
 };
