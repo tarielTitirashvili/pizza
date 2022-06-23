@@ -8,7 +8,7 @@ import Search from './search/Search';
 type Props = {};
 
 const Header = (props: Props) => {
-  const { totalCount, totalPrice, pizzas } = useSelector(
+  const { totalCount, totalPrice } = useSelector(
     (state: RootState) => state.cart,
   );
   return (

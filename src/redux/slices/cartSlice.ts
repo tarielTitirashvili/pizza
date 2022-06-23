@@ -26,21 +26,15 @@ export const cartSlice = createSlice({
             if (pizza.sizes === addedPizza.sizes) {
               if (pizza.types === addedPizza.types) {
                 pizza.quantity = pizza.quantity + 1;
-                state.totalPrice = state.totalPrice + pizza.price;
-                state.totalCount = state.totalCount + 1;
                 found = true;
               }
             }
           }
         });
         if (!found) {
-          state.totalPrice = state.totalPrice + addedPizza.price;
-          state.totalCount = state.totalCount + 1;
           state.pizzas.push({ ...addedPizza, quantity: 1 });
         }
       } else {
-        state.totalPrice = addedPizza.price;
-        state.totalCount = state.totalCount + 1;
         let newPizza: CartPizza = { ...addedPizza, quantity: 1 };
         state.pizzas.push(newPizza);
       }
@@ -52,13 +46,9 @@ export const cartSlice = createSlice({
           if (pizza.sizes === addedPizza.sizes) {
             if (pizza.types === addedPizza.types) {
               if (pizza.quantity <= 1) {
-                state.totalPrice = state.totalPrice - pizza.price;
-                state.totalCount = state.totalCount - 1;
                 return state.pizzas.splice(i, 1);
               } else {
                 pizza.quantity = pizza.quantity - 1;
-                state.totalPrice = state.totalPrice - pizza.price;
-                state.totalCount = state.totalCount - 1;
               }
             }
           }
@@ -66,10 +56,14 @@ export const cartSlice = createSlice({
       });
     },
     getTotalPriceCount: (state) => {
+      let count = 0;
+      let price = 0;
       state.pizzas.forEach((pizza) => {
-        state.totalCount = state.totalCount + pizza.quantity;
-        state.totalPrice = state.totalPrice + pizza.price * pizza.quantity;
+        count = count + pizza.quantity;
+        price = price + pizza.price * pizza.quantity;
       });
+      state.totalCount = count;
+      state.totalPrice = price;
     },
     clearCart: (state) => {
       state.pizzas = [];
@@ -77,6 +71,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addPizza, removePizza, clearCart } = cartSlice.actions;
+export const { addPizza, removePizza, clearCart, getTotalPriceCount } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,18 +1,32 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { addPizza, removePizza } from '../../redux/slices/cartSlice';
+import { addPizza, getTotalPriceCount } from '../../redux/slices/cartSlice';
+import { RootState } from '../../redux/store/store';
 import { Pizza, SelectedPizza } from '../../types';
 
 const PizzaBlock = (props: Pizza) => {
-  const { price, title, imageUrl, sizes, types } = props;
+  const { price, title, imageUrl, sizes, types, id } = props;
   const typeNames: string[] = ['тонкое', 'традиционное'];
   const [selectedType, setSelectedType] = React.useState<number>(types[0]);
   const [selectedSize, setSelectedSize] = React.useState<number>(sizes[0]);
+  const inCart = useSelector((state: RootState) =>
+    state.cart.pizzas.find(
+      (obj) =>
+        obj.id === id &&
+        obj.sizes === selectedSize &&
+        obj.types === selectedType,
+    ),
+  );
   const dispatch = useDispatch();
   const selectedPizza: SelectedPizza = {
     ...props,
     sizes: selectedSize,
     types: selectedType,
+  };
+  const add = () => {
+    dispatch(addPizza(selectedPizza));
+    dispatch(getTotalPriceCount());
   };
   return (
     <div className="pizza-block-wrapper">
@@ -20,9 +34,6 @@ const PizzaBlock = (props: Pizza) => {
         <img className="pizza-block__image" src={imageUrl} alt={title} />
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
-          <button onClick={() => dispatch(removePizza(selectedPizza))}>
-            remove
-          </button>
           <ul>
             {types.map((type) => (
               <li
@@ -46,9 +57,7 @@ const PizzaBlock = (props: Pizza) => {
         </div>
         <div className="pizza-block__bottom">
           <div className="pizza-block__price">from {price} $</div>
-          <button
-            onClick={() => dispatch(addPizza(selectedPizza))}
-            className="button button--outline button--add">
+          <button onClick={add} className="button button--outline button--add">
             <svg
               width="12"
               height="12"
@@ -61,7 +70,7 @@ const PizzaBlock = (props: Pizza) => {
               />
             </svg>
             <span>Add</span>
-            <i>0</i>
+            <i>{inCart ? inCart.quantity : 0}</i>
           </button>
         </div>
       </div>
