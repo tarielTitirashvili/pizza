@@ -82,6 +82,9 @@ const Home = (props: Props) => {
         setInit(false);
       }
     }
+    {
+      setInit(false);
+    }
   };
 
   const getData = (

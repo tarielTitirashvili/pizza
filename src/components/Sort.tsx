@@ -15,9 +15,23 @@ const Sort = (props: Props) => {
   const selectedType = useSelector(
     (state: RootState) => state.filter.selectedType,
   );
+  const sortRef = React.useRef<HTMLDivElement>(null);
+  const clickOutside = (e: MouseEvent) => {
+    if (sortRef.current !== null) {
+      if (!e.composedPath().includes(sortRef.current)) {
+        setIsOpen(false);
+      }
+    }
+  };
+  React.useEffect(() => {
+    document.addEventListener('click', clickOutside);
+    return () => {
+      document.removeEventListener('click', clickOutside);
+    };
+  }, []);
 
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <b>Sort by:</b>
         <div onClick={() => setIsOpen(!isOpen)}>
