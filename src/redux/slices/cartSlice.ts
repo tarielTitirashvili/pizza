@@ -22,13 +22,13 @@ export const cartSlice = createSlice({
       if (state.pizzas.length > 0) {
         let found = false;
         state.pizzas.forEach((pizza) => {
-          if (pizza.id === addedPizza.id) {
-            if (pizza.sizes === addedPizza.sizes) {
-              if (pizza.types === addedPizza.types) {
-                pizza.quantity = pizza.quantity + 1;
-                found = true;
-              }
-            }
+          if (
+            pizza.id === addedPizza.id &&
+            pizza.sizes === addedPizza.sizes &&
+            pizza.types === addedPizza.types
+          ) {
+            pizza.quantity = pizza.quantity + 1;
+            found = true;
           }
         });
         if (!found) {
@@ -42,15 +42,15 @@ export const cartSlice = createSlice({
     removePizza: (state, action: PayloadAction<SelectedPizza | CartPizza>) => {
       let addedPizza = action.payload;
       state.pizzas.forEach((pizza, i) => {
-        if (pizza.id === addedPizza.id) {
-          if (pizza.sizes === addedPizza.sizes) {
-            if (pizza.types === addedPizza.types) {
-              if (pizza.quantity <= 1) {
-                return state.pizzas.splice(i, 1);
-              } else {
-                pizza.quantity = pizza.quantity - 1;
-              }
-            }
+        if (
+          pizza.id === addedPizza.id &&
+          pizza.sizes === addedPizza.sizes &&
+          pizza.types === addedPizza.types
+        ) {
+          if (pizza.quantity <= 1) {
+            return state.pizzas.splice(i, 1);
+          } else {
+            pizza.quantity = pizza.quantity - 1;
           }
         }
       });

@@ -1,6 +1,13 @@
 import { SortType } from './types';
 
-export const categories: string[] = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
+export const categories: string[] = [
+  'All',
+  'Meat',
+  'Vegetarian',
+  'Grill',
+  'Spicy',
+  'Closed',
+];
 
 export const sortTypes: SortType[] = [
   {
@@ -34,3 +41,5 @@ export const sortTypes: SortType[] = [
     order: 'asc',
   },
 ];
+
+export const typeNames: string[] = ['тонкое', 'традиционное'];

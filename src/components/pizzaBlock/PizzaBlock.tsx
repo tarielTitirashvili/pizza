@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { typeNames } from '../../constants';
 import { addPizza, getTotalPriceCount } from '../../redux/slices/cartSlice';
 import { RootState } from '../../redux/store/store';
 import { Pizza, SelectedPizza } from '../../types';
 
 const PizzaBlock = (props: Pizza) => {
   const { price, title, imageUrl, sizes, types, id } = props;
-  const typeNames: string[] = ['тонкое', 'традиционное'];
   const [selectedType, setSelectedType] = React.useState<number>(types[0]);
   const [selectedSize, setSelectedSize] = React.useState<number>(sizes[0]);
   const inCart = useSelector((state: RootState) =>
