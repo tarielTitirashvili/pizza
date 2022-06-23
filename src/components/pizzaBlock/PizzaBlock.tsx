@@ -50,7 +50,7 @@ const PizzaBlock = (props: Pizza) => {
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={selectedSize === size ? 'active' : ''}>
-                {size} см.
+                {size} sm.
               </li>
             ))}
           </ul>

@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { typeNames } from '../constants';
 import {
   addPizza,
+  deletePizza,
   getTotalPriceCount,
   removePizza,
 } from '../redux/slices/cartSlice';
-import { RootState } from '../redux/store/store';
 import { CartPizza } from '../types';
 
 function PizzaBoxCart(props: CartPizza) {
@@ -20,6 +20,10 @@ function PizzaBoxCart(props: CartPizza) {
     dispatch(removePizza(props));
     dispatch(getTotalPriceCount());
   };
+  const onDelete = () => {
+    dispatch(deletePizza(props));
+    dispatch(getTotalPriceCount());
+  };
   return (
     <div className="cart__item">
       <div className="cart__item-img">
@@ -28,7 +32,7 @@ function PizzaBoxCart(props: CartPizza) {
       <div className="cart__item-info">
         <h3>{title}</h3>
         <p>
-          {typeNames[types]}, {sizes} см.
+          {typeNames[types]}, {sizes} sm.
         </p>
       </div>
       <div className="cart__item-count">
@@ -75,7 +79,7 @@ function PizzaBoxCart(props: CartPizza) {
       <div className="cart__item-price">
         <b>{price} $</b>
       </div>
-      <div className="cart__item-remove">
+      <div onClick={onDelete} className="cart__item-remove">
         <div className="button button--outline button--circle">
           <svg
             width="10"

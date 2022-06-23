@@ -1,5 +1,6 @@
+import { SelectedPizza } from './../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartPizza, SelectedPizza } from '../../types';
+import { CartPizza } from '../../types';
 
 export interface FilterState {
   totalPrice: number;
@@ -68,10 +69,27 @@ export const cartSlice = createSlice({
     clearCart: (state) => {
       state.pizzas = [];
     },
+    deletePizza: (state, action: PayloadAction<CartPizza>) => {
+      let addedPizza = action.payload;
+      state.pizzas.forEach((pizza, i) => {
+        if (
+          pizza.id === addedPizza.id &&
+          pizza.sizes === addedPizza.sizes &&
+          pizza.types === addedPizza.types
+        ) {
+          return state.pizzas.splice(i, 1);
+        }
+      });
+    },
   },
 });
 
-export const { addPizza, removePizza, clearCart, getTotalPriceCount } =
-  cartSlice.actions;
+export const {
+  addPizza,
+  removePizza,
+  clearCart,
+  getTotalPriceCount,
+  deletePizza,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

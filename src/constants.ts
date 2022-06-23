@@ -42,4 +42,4 @@ export const sortTypes: SortType[] = [
   },
 ];
 
-export const typeNames: string[] = ['тонкое', 'традиционное'];
+export const typeNames: string[] = ['small', 'traditional'];

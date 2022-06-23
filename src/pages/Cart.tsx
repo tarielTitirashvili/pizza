@@ -1,15 +1,22 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import PizzaBoxCart from '../components/PizzaBoxCart';
+import { clearCart, getTotalPriceCount } from '../redux/slices/cartSlice';
 import { RootState } from '../redux/store/store';
 
 type Props = {};
 
 const Cart = (props: Props) => {
+  const dispatch = useDispatch();
   const { pizzas, totalPrice, totalCount } = useSelector(
     (state: RootState) => state.cart,
   );
+  const clear = () => {
+    dispatch(clearCart());
+    dispatch(getTotalPriceCount());
+  };
   return (
     <div className="content">
       <div className="container container--cart">
@@ -44,9 +51,9 @@ const Cart = (props: Props) => {
                   strokeLinejoin="round"
                 />
               </svg>
-              Корзина
+              Cart
             </h2>
-            <div className="cart__clear">
+            <div onClick={clear} className="cart__clear">
               <svg
                 width="20"
                 height="20"
