@@ -13,31 +13,29 @@ const Pagination = (props: Props) => {
   const firstPAge = page === 1 ? page : page === maxPage ? page - 2 : page - 1;
   const secondPage = page === 1 ? page + 1 : page === maxPage ? page - 1 : page;
   const thirdPage = page === maxPage ? page : page === 1 ? page + 2 : page + 1;
-
+  if (loading) return <></>;
   return (
     <ul className={css.container}>
       {page === 1 ? (
         <span className={css.empty}></span>
       ) : (
-        <li
-          onClick={() => (!loading ? setPage(page - 1) : '')}
-          className={css.page}>
+        <li onClick={() => setPage(page - 1)} className={css.page}>
           &lt;
         </li>
       )}
 
       <li
-        onClick={() => (!loading ? setPage(firstPAge) : '')}
+        onClick={() => setPage(firstPAge)}
         className={`${firstPAge === page && css.active}`}>
         {firstPAge}
       </li>
       <li
-        onClick={() => (!loading ? setPage(secondPage) : '')}
+        onClick={() => setPage(secondPage)}
         className={`${secondPage === page && css.active}`}>
         {secondPage}
       </li>
       <li
-        onClick={() => (!loading ? setPage(thirdPage) : '')}
+        onClick={() => setPage(thirdPage)}
         className={`${thirdPage === page && css.active}`}>
         {thirdPage}
       </li>
@@ -45,9 +43,7 @@ const Pagination = (props: Props) => {
         ''
       ) : (
         <>
-          <li
-            onClick={() => (!loading ? setPage(page + 1) : '')}
-            className={css.page}>
+          <li onClick={() => setPage(page + 1)} className={css.page}>
             &gt;
           </li>
         </>

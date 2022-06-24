@@ -8,7 +8,7 @@ import './scss/app.scss';
 import { SearchType } from './types';
 export const SearchContext = React.createContext<SearchType>({
   search: '',
-  setSearch: () => undefined,
+  setSearch: () => '',
 });
 const App = () => {
   const [search, setSearch] = React.useState<string>('');

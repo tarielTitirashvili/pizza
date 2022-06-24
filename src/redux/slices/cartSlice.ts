@@ -22,16 +22,16 @@ export const cartSlice = createSlice({
       let addedPizza = action.payload;
       if (state.pizzas.length > 0) {
         let found = false;
-        state.pizzas.forEach((pizza) => {
-          if (
+        const founded = state.pizzas.find(
+          (pizza) =>
             pizza.id === addedPizza.id &&
             pizza.sizes === addedPizza.sizes &&
-            pizza.types === addedPizza.types
-          ) {
-            pizza.quantity = pizza.quantity + 1;
-            found = true;
-          }
-        });
+            pizza.types === addedPizza.types,
+        );
+        if (founded) {
+          founded.quantity++;
+          found = true;
+        }
         if (!found) {
           state.pizzas.push({ ...addedPizza, quantity: 1 });
         }

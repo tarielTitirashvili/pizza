@@ -8,16 +8,15 @@ import Sort from '../components/Sort';
 import { Pizza, SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  FilterState,
   setFilters,
   setSelCategory,
   setSelectedPage,
 } from '../redux/slices/filterSlice';
-import { RootState } from '../redux/store/store';
-import axios from 'axios';
+import { AppDispatch, RootState } from '../redux/store/store';
 import { useDebounce } from 'use-debounce';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
+import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
 type Props = {};
 
@@ -25,17 +24,16 @@ const Home = (props: Props) => {
   const navigate = useNavigate();
   const { selCategory, selectedSortType, selectedType, selectedPage } =
     useSelector((state: RootState) => state.filter);
-
-  const dispatch = useDispatch();
+  const { pizzas, status } = useSelector((state: RootState) => state.pizzas);
+  const dispatch = useDispatch<AppDispatch>();
   const changeCategory = (category: number) => {
     dispatch(setSelCategory(category));
+    dispatch(setSelectedPage(1));
   };
   const setPage = (page: number) => {
     dispatch(setSelectedPage(page));
   };
 
-  const [pizzas, setPizzas] = React.useState<Pizza[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
   const { search, setSearch } = React.useContext(SearchContext);
   const [debouncedSearch] = useDebounce(search, 300);
   const [init, setInit] = React.useState<boolean>(true);
@@ -49,7 +47,6 @@ const Home = (props: Props) => {
     const queryParams: string = window.location.search;
     if (queryParams) {
       let params = qs.parse(queryParams.slice(1));
-      //{ search, selCategory, selectedPage, selectedType }
       const k = params.search ? params.search?.toString() : '';
       const category = Number(params.selCategory);
       const page = Number(params.selectedPage);
@@ -71,30 +68,18 @@ const Home = (props: Props) => {
         setInit(false);
       }
     }
-    {
-      setInit(false);
-    }
+    setInit(false);
   };
 
-  const getData = (
+  const getData = async (
     page: number,
-    search?: string,
-    selCategory?: number,
-    selectedType?: SortType,
-  ): void => {
-    setLoading(true);
-    axios
-      .get(
-        `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
-          selCategory ? `category=${selCategory}&` : ''
-        }`}page=${page}&limit=4&sortBy=${selectedType?.sortType}&order=${
-          selectedType?.order
-        }${search && `&title=${search}`}`,
-      )
-      .then(({ data }) => {
-        setPizzas(data);
-        setLoading(false);
-      });
+    search: string,
+    selCategory: number,
+    selectedType: SortType,
+  ) => {
+    dispatch(
+      fetchPizzas({ search, selCategory, selectedType, selectedPage: page }),
+    );
   };
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -132,9 +117,23 @@ const Home = (props: Props) => {
         <Sort selectedSortType={selectedSortType.title} />
       </div>
       <h2 className="content__title">All Pizzas</h2>
-      <div className="content__items">{loading ? skeletons : allPizzas}</div>
+      <div className="content__items">
+        {status === 'loading' && skeletons}
+        {status === 'success' && allPizzas}
+      </div>
+      {status === 'error' && (
+        <div className="container container--cart">
+          <div className="cart cart--empty">
+            <h2>
+              {' '}
+              Unfortunately An error occurred while getting the pizzas try
+              again. 😕
+            </h2>
+          </div>
+        </div>
+      )}
       <Pagination
-        loading={loading}
+        loading={status !== 'success'}
         page={selectedPage}
         setPage={setPage}
         maxPage={3}
