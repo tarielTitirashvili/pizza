@@ -3,21 +3,14 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { typeNames } from '../../constants';
 import { addPizza, getTotalPriceCount } from '../../redux/slices/cartSlice';
-import { RootState } from '../../redux/store/store';
+import { selectPizzaById } from '../../redux/slices/pizzasSlice';
 import { Pizza, SelectedPizza } from '../../types';
 
 const PizzaBlock = (props: Pizza) => {
   const { price, title, imageUrl, sizes, types, id } = props;
   const [selectedType, setSelectedType] = React.useState<number>(types[0]);
   const [selectedSize, setSelectedSize] = React.useState<number>(sizes[0]);
-  const inCart = useSelector((state: RootState) =>
-    state.cart.pizzas.find(
-      (obj) =>
-        obj.id === id &&
-        obj.sizes === selectedSize &&
-        obj.types === selectedType,
-    ),
-  );
+  const inCart = useSelector(selectPizzaById(id, selectedSize, selectedType));
   const dispatch = useDispatch();
   const selectedPizza: SelectedPizza = {
     ...props,
@@ -28,6 +21,7 @@ const PizzaBlock = (props: Pizza) => {
     dispatch(addPizza(selectedPizza));
     dispatch(getTotalPriceCount());
   };
+  console.log(inCart)
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">

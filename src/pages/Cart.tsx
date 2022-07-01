@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import EmptyCart from '../components/EmptyCart';
 import PizzaBoxCart from '../components/PizzaBoxCart';
-import { clearCart, getTotalPriceCount } from '../redux/slices/cartSlice';
+import { clearCart, getTotalPriceCount, selectCart } from '../redux/slices/cartSlice';
 import { RootState } from '../redux/store/store';
 
 type Props = {};
@@ -12,7 +12,7 @@ type Props = {};
 const Cart = (props: Props) => {
   const dispatch = useDispatch();
   const { pizzas, totalPrice, totalCount } = useSelector(
-    (state: RootState) => state.cart,
+    selectCart
   );
   const clear = () => {
     dispatch(clearCart());

@@ -1,14 +1,15 @@
 import { SelectedPizza } from './../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartPizza } from '../../types';
+import { RootState } from '../store/store';
 
-export interface FilterState {
+interface CartState {
   totalPrice: number;
   totalCount: number;
   pizzas: CartPizza[];
 }
 
-const initialState: FilterState = {
+const initialState: CartState = {
   totalPrice: 0,
   totalCount: 0,
   pizzas: [],
@@ -83,6 +84,8 @@ export const cartSlice = createSlice({
     },
   },
 });
+
+export const selectCart = (state: RootState): CartState => state.cart
 
 export const {
   addPizza,

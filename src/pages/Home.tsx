@@ -16,7 +16,7 @@ import { AppDispatch, RootState } from '../redux/store/store';
 import { useDebounce } from 'use-debounce';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
 
 type Props = {};
 
@@ -24,7 +24,7 @@ const Home = (props: Props) => {
   const navigate = useNavigate();
   const { selCategory, selectedSortType, selectedType, selectedPage } =
     useSelector((state: RootState) => state.filter);
-  const { pizzas, status } = useSelector((state: RootState) => state.pizzas);
+  const { pizzas, status } = useSelector(selectPizzas);
   const dispatch = useDispatch<AppDispatch>();
   const changeCategory = (category: number) => {
     dispatch(setSelCategory(category));

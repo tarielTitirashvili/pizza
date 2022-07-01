@@ -2,14 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import pizzaLogoSvg from '../assets/img/pizza-logo.svg';
-import { RootState } from '../redux/store/store';
+import { selectCart } from '../redux/slices/cartSlice';
 import Search from './search/Search';
 
 type Props = {};
 
 const Header = (props: Props) => {
   const { totalCount, totalPrice } = useSelector(
-    (state: RootState) => state.cart,
+    selectCart
   );
   return (
     <div className="header">
