@@ -21,7 +21,6 @@ const PizzaBlock = (props: Pizza) => {
     dispatch(addPizza(selectedPizza));
     dispatch(getTotalPriceCount());
   };
-  console.log(inCart)
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">

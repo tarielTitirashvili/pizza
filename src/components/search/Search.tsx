@@ -1,16 +1,18 @@
 import React from 'react';
 import css from './search.module.scss';
 import searchIcon from '../../assets/img/searchIcon.svg';
-import { SearchContext } from '../../App';
-import { SearchType } from '../../types';
+import { useSelector } from 'react-redux';
+import { selectSearch, setSearch } from '../../redux/slices/filterSlice';
+import { useDispatch } from 'react-redux';
 type Props = {};
 
 const Search = (props: Props) => {
-  const { search, setSearch }: SearchType = React.useContext(SearchContext);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const search = useSelector(selectSearch);
+  const dispatch = useDispatch();
 
   const clear = () => {
-    setSearch('');
+    dispatch(setSearch(''));
     if (inputRef.current !== null) {
       inputRef.current.focus();
     }
@@ -22,7 +24,7 @@ const Search = (props: Props) => {
         className={css.search}
         value={search}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setSearch(e.target.value);
+          dispatch(setSearch(e.target.value));
         }}
         placeholder="Find Pizza..."
       />

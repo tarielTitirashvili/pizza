@@ -1,5 +1,4 @@
 import React from 'react';
-import { SearchContext } from '../App';
 import Categories from '../components/Categories';
 import Pagination from '../components/pagination/Pagination';
 import PizzaBlock from '../components/pizzaBlock/PizzaBlock';
@@ -8,6 +7,7 @@ import Sort from '../components/Sort';
 import { Pizza, SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  selectSearch,
   setFilters,
   setSelCategory,
   setSelectedPage,
@@ -22,8 +22,9 @@ type Props = {};
 
 const Home = (props: Props) => {
   const navigate = useNavigate();
-  const { selCategory, selectedSortType, selectedType, selectedPage } =
-    useSelector((state: RootState) => state.filter);
+  const { selCategory, selectedSortType, selectedType, selectedPage } = useSelector(
+    (state: RootState) => state.filter,
+  );
   const { pizzas, status } = useSelector(selectPizzas);
   const dispatch = useDispatch<AppDispatch>();
   const changeCategory = (category: number) => {
@@ -34,14 +35,12 @@ const Home = (props: Props) => {
     dispatch(setSelectedPage(page));
   };
 
-  const { search, setSearch } = React.useContext(SearchContext);
+  const search = useSelector(selectSearch);
   const [debouncedSearch] = useDebounce(search, 300);
   const [init, setInit] = React.useState<boolean>(true);
 
   const skeletons = [...new Array(6)].map((elem, i) => <Skeleton key={i} />);
-  const allPizzas = pizzas.map((pizza: Pizza) => (
-    <PizzaBlock key={pizza.id} {...pizza} />
-  ));
+  const allPizzas = pizzas.map((pizza: Pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
 
   const getQueryParams = () => {
     const queryParams: string = window.location.search;
@@ -51,9 +50,9 @@ const Home = (props: Props) => {
       const category = Number(params.selCategory);
       const page = Number(params.selectedPage);
       const type = Number(params.selectedType);
-      setSearch(k);
       dispatch(
         setFilters({
+          search: k,
           selCategory: category,
           selectedPage: page,
           selectedType: type,
@@ -77,9 +76,7 @@ const Home = (props: Props) => {
     selCategory: number,
     selectedType: SortType,
   ) => {
-    dispatch(
-      fetchPizzas({ search, selCategory, selectedType, selectedPage: page }),
-    );
+    dispatch(fetchPizzas({ search, selCategory, selectedType, selectedPage: page }));
   };
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -110,10 +107,7 @@ const Home = (props: Props) => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          selectedCategory={selCategory}
-          onClickNewCategory={changeCategory}
-        />
+        <Categories selectedCategory={selCategory} onClickNewCategory={changeCategory} />
         <Sort selectedSortType={selectedSortType.title} />
       </div>
       <h2 className="content__title">All Pizzas</h2>
@@ -124,11 +118,7 @@ const Home = (props: Props) => {
       {status === 'error' && (
         <div className="container container--cart">
           <div className="cart cart--empty">
-            <h2>
-              {' '}
-              Unfortunately An error occurred while getting the pizzas try
-              again. 😕
-            </h2>
+            <h2> Unfortunately An error occurred while getting the pizzas try again. 😕</h2>
           </div>
         </div>
       )}
