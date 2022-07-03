@@ -38,8 +38,6 @@ export const filterSlice = createSlice({
   },
 });
 
-
-
 export const { setSelCategory, setSelectedType, setSelectedPage, setFilters, setSearch } =
   filterSlice.actions;
 

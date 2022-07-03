@@ -23,7 +23,7 @@ const Header = () => {
           <div className="header__logo">
             <img width="38" src={pizzaLogoSvg} alt="Pizza logo" />
             <div>
-              <h1>React Pizza</h1>
+              <h1>Best Pizzas</h1>
               <p>the most delicious pizzas in the universe</p>
             </div>
           </div>

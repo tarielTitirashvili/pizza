@@ -6,11 +6,7 @@ import Skeleton from '../components/pizzaBlock/skeleton';
 import Sort from '../components/Sort';
 import { Pizza, SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  setFilters,
-  setSelCategory,
-  setSelectedPage,
-} from '../redux/slices/filter/filterSlice';
+import { setFilters, setSelCategory, setSelectedPage } from '../redux/slices/filter/filterSlice';
 import { AppDispatch, RootState } from '../redux/store/store';
 import { useDebounce } from 'use-debounce';
 import qs from 'qs';

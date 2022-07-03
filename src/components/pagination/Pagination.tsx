@@ -24,19 +24,13 @@ const Pagination = (props: Props) => {
         </li>
       )}
 
-      <li
-        onClick={() => setPage(firstPAge)}
-        className={`${firstPAge === page && css.active}`}>
+      <li onClick={() => setPage(firstPAge)} className={`${firstPAge === page && css.active}`}>
         {firstPAge}
       </li>
-      <li
-        onClick={() => setPage(secondPage)}
-        className={`${secondPage === page && css.active}`}>
+      <li onClick={() => setPage(secondPage)} className={`${secondPage === page && css.active}`}>
         {secondPage}
       </li>
-      <li
-        onClick={() => setPage(thirdPage)}
-        className={`${thirdPage === page && css.active}`}>
+      <li onClick={() => setPage(thirdPage)} className={`${thirdPage === page && css.active}`}>
         {thirdPage}
       </li>
       {page === maxPage || page > maxPage ? (

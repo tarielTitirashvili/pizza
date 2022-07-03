@@ -1,4 +1,4 @@
-import { CartPizza } from "../../../types";
+import { CartPizza } from '../../../types';
 
 export interface CartState {
   totalPrice: number;

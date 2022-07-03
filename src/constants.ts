@@ -1,13 +1,6 @@
 import { SortType } from './types';
 
-export const categories: string[] = [
-  'All',
-  'Meat',
-  'Vegetarian',
-  'Grill',
-  'Spicy',
-  'Closed',
-];
+export const categories: string[] = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
 export const sortTypes: SortType[] = [
   {

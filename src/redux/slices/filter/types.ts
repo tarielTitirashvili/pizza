@@ -1,4 +1,4 @@
-import { SortType } from "../../../types";
+import { SortType } from '../../../types';
 
 export interface FilteredNum {
   search: string;
