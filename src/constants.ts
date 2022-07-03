@@ -5,12 +5,12 @@ export const categories: string[] = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spic
 export const sortTypes: SortType[] = [
   {
     title: 'popularity (DESC)',
-    sortType: 'popularity',
+    sortType: 'rating',
     order: 'desc',
   },
   {
     title: 'popularity (ASC)',
-    sortType: 'popularity',
+    sortType: 'rating',
     order: 'asc',
   },
   {

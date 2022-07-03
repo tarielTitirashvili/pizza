@@ -13,7 +13,7 @@ const getCountAndPriceFromLS = (pizzas: CartPizza[]): GetCountAndPriceFromLS => 
   });
   return {
     totalCount,
-    totalPrice,
+    totalPrice: Math.round(totalPrice*100)/100,
   };
 };
 

@@ -5,9 +5,10 @@ import { typeNames } from '../../constants';
 import { addPizza, getTotalPriceCount } from '../../redux/slices/cart/cartSlice';
 import { selectPizzaById } from '../../redux/slices/pizzas/selectors';
 import { Pizza, SelectedPizza } from '../../types';
+import star from '../../assets/img/rating-star-gold-orange-svgrepo-com.svg';
 
 const PizzaBlock = (props: Pizza) => {
-  const { price, title, imageUrl, sizes, types, id } = props;
+  const { price, title, imageUrl, sizes, types, id, rating } = props;
   const [selectedType, setSelectedType] = React.useState<number>(types[0]);
   const [selectedSize, setSelectedSize] = React.useState<number>(sizes[0]);
   const inCart = useSelector(selectPizzaById(id, selectedSize, selectedType));
@@ -49,7 +50,13 @@ const PizzaBlock = (props: Pizza) => {
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">from {price} $</div>
+          <div >
+            <span className="pizza-block__rating">
+              {rating}
+              <img className="pizza-block__rating-star" src={star} alt="star" />
+            </span>
+            <div className="pizza-block__price">from {price} $</div>
+          </div>
           <button onClick={add} className="button button--outline button--add">
             <svg
               width="12"

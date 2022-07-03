@@ -64,8 +64,24 @@
 
   &__price {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 27px;
     letter-spacing: 0.015em;
+  }
+  &__rating {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    color: orange;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0.015em;
+    margin-left: 5px;
+  }
+  &__rating-star{
+    height: 24px;
+    margin-left: 3px;
+    padding-bottom: 4px;
   }
 }
