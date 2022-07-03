@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { typeNames } from '../../constants';
-import { addPizza, getTotalPriceCount } from '../../redux/slices/cartSlice';
-import { selectPizzaById } from '../../redux/slices/pizzasSlice';
+import { addPizza, getTotalPriceCount } from '../../redux/slices/cart/cartSlice';
+import { selectPizzaById } from '../../redux/slices/pizzas/selectors';
 import { Pizza, SelectedPizza } from '../../types';
 
 const PizzaBlock = (props: Pizza) => {

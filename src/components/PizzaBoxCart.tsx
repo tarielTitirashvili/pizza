@@ -6,7 +6,7 @@ import {
   deletePizza,
   getTotalPriceCount,
   removePizza,
-} from '../redux/slices/cartSlice';
+} from '../redux/slices/cart/cartSlice';
 import { CartPizza } from '../types';
 
 function PizzaBoxCart(props: CartPizza) {

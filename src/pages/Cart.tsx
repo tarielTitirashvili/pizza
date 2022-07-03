@@ -4,16 +4,12 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import EmptyCart from '../components/EmptyCart';
 import PizzaBoxCart from '../components/PizzaBoxCart';
-import { clearCart, getTotalPriceCount, selectCart } from '../redux/slices/cartSlice';
-import { RootState } from '../redux/store/store';
+import { clearCart, getTotalPriceCount } from '../redux/slices/cart/cartSlice';
+import { selectCart } from '../redux/slices/cart/selectors';
 
-type Props = {};
-
-const Cart = (props: Props) => {
+const Cart = () => {
   const dispatch = useDispatch();
-  const { pizzas, totalPrice, totalCount } = useSelector(
-    selectCart
-  );
+  const { pizzas, totalPrice, totalCount } = useSelector(selectCart);
   const clear = () => {
     dispatch(clearCart());
     dispatch(getTotalPriceCount());
@@ -100,12 +96,7 @@ const Cart = (props: Props) => {
         </div>
         <div className="content__items">
           {pizzas.map((pizza) => {
-            return (
-              <PizzaBoxCart
-                key={`${pizza.id}${pizza.sizes}${pizza.types}`}
-                {...pizza}
-              />
-            );
+            return <PizzaBoxCart key={`${pizza.id}${pizza.sizes}${pizza.types}`} {...pizza} />;
           })}
         </div>
         <div className="cart__bottom">
@@ -120,9 +111,7 @@ const Cart = (props: Props) => {
             </span>
           </div>
           <div className="cart__bottom-buttons">
-            <NavLink
-              to="/"
-              className="button button--outline button--add go-back-btn">
+            <NavLink to="/" className="button button--outline button--add go-back-btn">
               <svg
                 width="8"
                 height="14"

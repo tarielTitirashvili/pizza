@@ -1,16 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CartPizza, Pizza, SortType } from '../../types';
-import { RootState } from '../store/store';
+import { Pizza, SortType } from '../../../types';
+import { PizzasState, Status } from './types';
 
-export interface PizzasState {
-  pizzas: Pizza[];
-  status: 'loading' | 'success' | 'error';
-}
+
 
 const initialState: PizzasState = {
   pizzas: [],
-  status: 'loading',
+  status: Status.LOADING,
 };
 
 export const pizzasSlice = createSlice({
@@ -23,14 +20,14 @@ export const pizzasSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state, action) => {
-      state.status = 'loading';
+      state.status = Status.LOADING;
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
       state.pizzas = action.payload;
-      state.status = 'success';
+      state.status = Status.SUCCESS;
     });
     builder.addCase(fetchPizzas.rejected, (state, action) => {
-      state.status = 'error';
+      state.status = Status.ERROR;
       state.pizzas = [];
     });
   },
@@ -45,27 +42,20 @@ interface Params {
 
 export const fetchPizzas = createAsyncThunk(
   'pizzas/fetchPizzas',
-  async (params: Params, thunkAPI) => {
+  async (params: Params) => {
     const { search, selCategory, selectedPage, selectedType } = params;
-    const { data } = await axios.get(
+    const { data } = await axios.get<Pizza[]>(
       `https://62a85ee7943591102ba05a2c.mockapi.io/pizzas?${`${
         selCategory ? `category=${selCategory}&` : ''
       }`}page=${selectedPage}&limit=4&sortBy=${selectedType?.sortType}&order=${
         selectedType?.order
       }${search && `&title=${search}`}`,
     );
-    return data;
+    return data
   },
 );
 
-export const selectPizzas = (state: RootState):PizzasState  => state.pizzas
-export const selectPizzaById = (id: number, selectedSize: number, selectedType: number) =>
-(state: RootState):CartPizza | undefined => state.cart.pizzas.find(
-  (obj) =>
-    obj.id === id &&
-    obj.sizes === selectedSize &&
-    obj.types === selectedType,
-)
+
  
 // Action creators are generated for each case reducer function
 export const { setPizzas } = pizzasSlice.actions;

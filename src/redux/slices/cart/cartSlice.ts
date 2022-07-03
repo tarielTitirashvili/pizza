@@ -1,18 +1,16 @@
-import { SelectedPizza } from './../../types';
+import { SelectedPizza } from '../../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartPizza } from '../../types';
-import { RootState } from '../store/store';
+import { CartPizza } from '../../../types';
+import getCartDetailsFromLS from '../../../utils/getCartDetailsFromLS';
+import getCountAndPriceFromLS from '../../../utils/getCountAndPriceFromLS';
+import { CartState } from './types';
 
-interface CartState {
-  totalPrice: number;
-  totalCount: number;
-  pizzas: CartPizza[];
-}
+const { pizzas, totalCount, totalPrice } = getCartDetailsFromLS();
 
 const initialState: CartState = {
-  totalPrice: 0,
-  totalCount: 0,
-  pizzas: [],
+  totalPrice: totalPrice,
+  totalCount: totalCount,
+  pizzas: pizzas,
 };
 
 export const cartSlice = createSlice({
@@ -58,14 +56,9 @@ export const cartSlice = createSlice({
       });
     },
     getTotalPriceCount: (state) => {
-      let count = 0;
-      let price = 0;
-      state.pizzas.forEach((pizza) => {
-        count = count + pizza.quantity;
-        price = price + pizza.price * pizza.quantity;
-      });
-      state.totalCount = count;
-      state.totalPrice = price;
+      const countPrice = getCountAndPriceFromLS(state.pizzas);
+      state.totalCount = countPrice.totalCount;
+      state.totalPrice = countPrice.totalPrice;
     },
     clearCart: (state) => {
       state.pizzas = [];
@@ -85,14 +78,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const selectCart = (state: RootState): CartState => state.cart
-
-export const {
-  addPizza,
-  removePizza,
-  clearCart,
-  getTotalPriceCount,
-  deletePizza,
-} = cartSlice.actions;
+export const { addPizza, removePizza, clearCart, getTotalPriceCount, deletePizza } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

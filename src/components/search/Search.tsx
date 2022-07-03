@@ -2,11 +2,11 @@ import React from 'react';
 import css from './search.module.scss';
 import searchIcon from '../../assets/img/searchIcon.svg';
 import { useSelector } from 'react-redux';
-import { selectSearch, setSearch } from '../../redux/slices/filterSlice';
+import { setSearch } from '../../redux/slices/filter/filterSlice';
 import { useDispatch } from 'react-redux';
-type Props = {};
+import { selectSearch } from '../../redux/slices/filter/selectors';
 
-const Search = (props: Props) => {
+const Search = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const search = useSelector(selectSearch);
   const dispatch = useDispatch();

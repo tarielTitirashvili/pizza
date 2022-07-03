@@ -1,7 +1,8 @@
 import React from 'react';
 import { sortTypes } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedType, setSelectedType } from '../redux/slices/filterSlice';
+import { setSelectedType } from '../redux/slices/filter/filterSlice';
+import { selectSelectedType } from '../redux/slices/filter/selectors';
 
 type Props = {
   selectedSortType: string;
@@ -11,9 +12,7 @@ const Sort = (props: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { selectedSortType } = props;
   const dispatch = useDispatch();
-  const selectedType = useSelector(
-    selectSelectedType,
-  );
+  const selectedType = useSelector(selectSelectedType);
   const sortRef = React.useRef<HTMLDivElement>(null);
   const clickOutside = (e: MouseEvent) => {
     if (sortRef.current !== null) {

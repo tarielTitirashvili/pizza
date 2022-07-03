@@ -1,9 +1,7 @@
 import React from 'react';
 import NotFoundBlock from '../components/notFoundBlock/NotFoundBlock';
 
-type Props = {};
-
-const NotFound = (props: Props) => {
+const NotFound = () => {
   return <NotFoundBlock />;
 };
 

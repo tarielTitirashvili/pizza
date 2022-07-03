@@ -1,9 +1,7 @@
 import React from 'react';
 import emptyCart from '../assets/img/empty-cart.png';
 
-type Props = {};
-
-const EmptyCart = (props: Props) => {
+const EmptyCart = () => {
   return (
     <div className="container container--cart">
       <div className="cart cart--empty">

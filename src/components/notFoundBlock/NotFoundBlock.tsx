@@ -3,9 +3,7 @@ import { NavLink } from 'react-router-dom';
 import css from './NotFoundBlock.module.scss';
 import pizza from '../../assets/img/pizza-svgrepo-com.svg';
 
-type Props = {};
-
-const NotFoundBlock = (props: Props) => {
+const NotFoundBlock = () => {
   return (
     <div>
       <h2 className={css.root}> PAGE NOT FOUND</h2>

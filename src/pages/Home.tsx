@@ -7,20 +7,20 @@ import Sort from '../components/Sort';
 import { Pizza, SortType } from '../types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectSearch,
   setFilters,
   setSelCategory,
   setSelectedPage,
-} from '../redux/slices/filterSlice';
+} from '../redux/slices/filter/filterSlice';
 import { AppDispatch, RootState } from '../redux/store/store';
 import { useDebounce } from 'use-debounce';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas } from '../redux/slices/pizzas/pizzasSlice';
+import { selectSearch } from '../redux/slices/filter/selectors';
+import { selectPizzas } from '../redux/slices/pizzas/selectors';
+import { Status } from '../redux/slices/pizzas/types';
 
-type Props = {};
-
-const Home = (props: Props) => {
+const Home = () => {
   const navigate = useNavigate();
   const { selCategory, selectedSortType, selectedType, selectedPage } = useSelector(
     (state: RootState) => state.filter,
@@ -34,7 +34,6 @@ const Home = (props: Props) => {
   const setPage = (page: number) => {
     dispatch(setSelectedPage(page));
   };
-
   const search = useSelector(selectSearch);
   const [debouncedSearch] = useDebounce(search, 300);
   const [init, setInit] = React.useState<boolean>(true);
@@ -112,10 +111,10 @@ const Home = (props: Props) => {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {status === 'loading' && skeletons}
-        {status === 'success' && allPizzas}
+        {status === Status.LOADING && skeletons}
+        {status === Status.SUCCESS && allPizzas}
       </div>
-      {status === 'error' && (
+      {status === Status.ERROR && (
         <div className="container container--cart">
           <div className="cart cart--empty">
             <h2> Unfortunately An error occurred while getting the pizzas try again. 😕</h2>
